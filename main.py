@@ -88,7 +88,7 @@ def create_float_class(name, s, e, m):
 
 
         def toBin(self):
-            return f"0b{self.S_bin}{self.E_bin}{self.M_bin}"
+            return f"0b{self.S_bin}_{self.E_bin}_{self.M_bin}"
 
 
         def toHex(self):
@@ -97,11 +97,11 @@ def create_float_class(name, s, e, m):
     return FloatIR
 
 
-HALF = create_float_class("HALF", 1, 5, 10)
-BF16 = create_float_class("BF16", 1, 8, 7)
-FP32 = create_float_class("FP32", 1, 8, 23)
-FP8E4M3 = create_float_class("FP8E4M3", 1, 4, 3)
-FP8E5M2 = create_float_class("FP8E5M2", 1, 5, 2)
+HALF = create_float_class("HALF E5M10", 1, 5, 10)
+BF16 = create_float_class("BF16 E8M7", 1, 8, 7)
+FP32 = create_float_class("FP32 E8M23", 1, 8, 23)
+FP8E4M3 = create_float_class("FP8 E4M3", 1, 4, 3)
+FP8E5M2 = create_float_class("FP8 E5M2", 1, 5, 2)
 
 
 
@@ -153,8 +153,8 @@ class NumberConverter(FlowLauncher):
                 for func in self.fp_converters:
                     fp = func(decResult[0])
                     results.append({
-                        "Title": f"Hex {fp.toHex()} Bin {fp.toBin()} Fp {fp.toFloat()}",
-                        "SubTitle": f"{func.__name__}",
+                        "Title": f"Hex {fp.toHex()} Bin {fp.toBin()}",
+                        "SubTitle": f"{func.__name__} {fp.toFloat()}",
                         "IcoPath": "Images/app.png",
                         'JsonRPCAction': {
                             'method': 'copyToClipboard',
@@ -179,12 +179,26 @@ class NumberConverter(FlowLauncher):
                 for func in self.fp_converters:
                     fp = func(query)
                     results.append({
-                        "Title": f"Hex {fp.toHex()} Bin {fp.toBin()} Fp {fp.toFloat()}",
-                        "SubTitle": f"{func.__name__}",
+                        "Title": f"{fp.toFloat()}",
+                        "SubTitle": f"{func.__name__} Bin {fp.toBin()}",
                         "IcoPath": "Images/app.png",
                         'JsonRPCAction': {
                             'method': 'copyToClipboard',
                             'parameters': [0],
+                            'dontHideAfterAction': False
+                        }
+                    })
+            else:
+                # Dec only need dec->dec convert
+                for func in self.i2i_converters:
+                    result = func(decResult[0])
+                    results.append({
+                        "Title": result[0],
+                        "SubTitle": f"{result[1]}",
+                        "IcoPath": "Images/app.png",
+                        'JsonRPCAction': {
+                            'method': 'copyToClipboard',
+                            'parameters': [result[0]],
                             'dontHideAfterAction': False
                         }
                     })

@@ -75,6 +75,9 @@ def create_float_class(name, s, e, m):
                     min_exponent = len(data) - 2 - min_mantissa
                     self.M_bin = data[-min_mantissa:]
                     self.E_bin = data[2:2+min_exponent] if min_exponent>0 else "0"
+                # finnal we need padding E and M
+                self.E_bin = self.E_bin.zfill(self.EXPONENT)
+                self.M_bin = self.M_bin.zfill(self.MANTISSA)
                 # print(f"{name}, s {self.S_bin} e {self.E_bin} m {self.M_bin}")
 
 

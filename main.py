@@ -218,7 +218,7 @@ class NumberConverter(FlowLauncher):
         return results
 
     def copyToClipboard(self, value):
-        command = 'echo|set /p={v}|clip'.format(v=value.strip())
+        command = f"echo|set /p={value}|clip"
         os.system(command)
 
 

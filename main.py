@@ -117,6 +117,8 @@ def intToHex(dec):
 
 
 def intToBin(dec):
+    # bin_str = bin(dec)
+    # return (re.sub(r'(.{4})(?!$)', r'\1_', bin_str), "Bin")
     return (f"{bin(dec)}", "Bin")
 
 
